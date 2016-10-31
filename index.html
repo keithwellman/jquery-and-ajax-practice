@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Keith Wellman">
+    <meta name="description" content="JQuery form">
+    <title>JQuery Practice Form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("input#creditcard").click(function() {
+          $("div#ccinfo").show();
+          $("div#wtinfo").hide();
+        });
+        $("input#wiretransfer").click(function() {
+          $("div#ccinfo").hide();
+          $("div#wtinfo").show();
+        });
+        $('.number').keyup(function(event) {
+          if (/\D/g.test(this.value)) {
+            this.value = this.value.replace(/\D/g, '');
+          }
+        });
+        $(".removable").draggable({
+          opacity: 0.35,
+          cursor: "move",
+          revert: true
+        });
+        $(".droppable").droppable({
+          drop: function(event, ui) {
+            if(confirm("Are you sure you want to trash this item?") === true) {
+              ui.draggable.remove();
+            }
+          }
+        });
+
+      }); // end jQuery
+      function displayInfo(url, id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById(id).innerHTML = this.responseText;
+          }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+      }
+    </script>
+    <style media="screen">
+      #ccinfo, #wtinfo {
+        display: none;
+      }
+      img, ul {
+        display: inline-block;
+      }
+      .droppable, .list {
+        display: inline-block;
+      }
+    </style>
+  </head>
+<body>
+  <h3>Payment:</h3>
+  <input type="radio" id="creditcard" name="payment" value="Credit Card"> Credit Card
+  <input type="radio" id="wiretransfer" name="payment" value="Wire transfer"> Wire transfer
+  <input type="button" name="buy" value="buy"><br>
+  <div id="ccinfo">
+    Card number: <input class="number" type="text" id="card" name="cardnumber" size="16" maxlength="16" value="">
+    Expiration: <input class="number" type="text" name="month" size="2" maxlength="2" value=""> /
+    <input class="number" type="text" name="year" size="4" maxlength="4" value="">
+    3-digit security number: <input class="number" type="text" name="ccv" size="3" maxlength="3" value="">
+  </div>
+
+  <div id="wtinfo"><p>
+    Transfer the amount to: reg. $957.00, to account 0009286322 (in English)
+  </p></div>
+  <br>
+  <hr>
+  <br>
+  <div class="list">
+    <ul class="removable">
+      <li class="removable">Drag me 1</li>
+      <li class="removable">Drag me 2</li>
+      <li class="removable">Drag me 3</li>
+    </ul>
+  </div>
+  <br>
+  <div class="droppable">
+    <img src="trash.png" alt="trash" />
+  </div>
+  <br>
+  <div class="click">
+    <ul class="informationable">
+      <li id="thing1" onclick="displayInfo('info1.html', 'thing1')">Click me for more information</li>
+      <li id="thing2" onclick="displayInfo('info2.html', 'thing2')">Click me for more information</li>
+      <li id="thing3" onclick="displayInfo('info3.html', 'thing3')">Click me for more information</li>
+    </ul>
+  </div>
+
+</body>
+</html>
